@@ -26,7 +26,15 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# local database (use migrations + seed in each environment)
+prisma/*.db
+prisma/*.db-journal
+
+# playwright-cli session artifacts
+.playwright-cli/
 
 # vercel
 .vercel
