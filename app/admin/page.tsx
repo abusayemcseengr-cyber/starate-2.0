@@ -13,11 +13,8 @@ import {
   LayoutGrid, 
   List, 
   Search,
-  ChevronRight,
   X,
-  History,
   ShieldCheck,
-  Globe,
   Settings
 } from "lucide-react";
 
@@ -333,10 +330,13 @@ export default function AdminDashboard() {
   }
 
   if (loading && celebrities.length === 0) {
-    return <div style={{ padding: "var(--space-2xl)", textAlign: "center" }}>Loading Admin Tools...</div>;
+    return (
+      <div style={{ padding: "var(--space-2xl)", textAlign: "center" }}>
+        Loading Admin Tools...
+      </div>
+    );
   }
 
-  return (
   return (
     <div style={{ 
       minHeight: "100vh", 
@@ -404,7 +404,7 @@ export default function AdminDashboard() {
           <MetricCard title="Active Stars" value={stats.totalStars} icon={Star} trend="+3 this week" color="var(--aurora-indigo)" />
           <MetricCard title="Engagement" value={stats.totalVotes} icon={BarChart3} trend="12% vs last month" color="var(--aurora-purple)" />
           <MetricCard title="System Users" value={stats.totalUsers} icon={Users} trend="+42 recent" color="var(--aurora-pink)" />
-          <MetricCard title="Global Rating" value={`${stats.platformAvg} ★`} icon={TrendingUp} color="var(--aurora-emerald)" />
+          <MetricCard title="Global Rating" value={`${stats.platformAvg} ★`} icon={Star} color="var(--aurora-emerald)" />
         </motion.div>
 
         {/* Main Content Area */}
@@ -477,202 +477,204 @@ export default function AdminDashboard() {
             )}
           </div>
 
-      <AnimatePresence mode="wait">
-        {activeTab === "celebrities" ? (
-          <motion.div 
-            key="celeb-tab" 
-            initial={{ opacity: 0, y: 10 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            exit={{ opacity: 0, y: -10 }}
-          >
-             {viewMode === "grid" ? (
-               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24 }}>
-                  <AnimatePresence>
-                    {filteredCelebrities.map((cel, idx) => (
-                      <motion.div
-                        key={cel.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                      >
-                        <GlassPanel padding="var(--space-md)" radius="2xl" style={{ position: "relative", overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}>
-                          <div style={{ position: "relative", width: "100%", height: 200, borderRadius: 16, overflow: "hidden", marginBottom: 16 }}>
-                            <Image 
-                              src={cel.photo} 
-                              alt={cel.name} 
-                              fill
-                              unoptimized
-                              style={{ objectFit: "cover" }} 
-                            />
-                            <div style={{ 
-                              position: "absolute", top: 12, right: 12, background: "rgba(255,255,255,0.9)", 
-                              backdropFilter: "blur(4px)", padding: "4px 10px", borderRadius: 10, 
-                              fontSize: "0.85rem", fontWeight: 800, display: "flex", alignItems: "center", gap: 4
-                            }}>
-                              <Star size={14} fill="var(--aurora-indigo)" stroke="var(--aurora-indigo)" />
-                              {cel.avgRating.toFixed(1)}
-                            </div>
-                          </div>
-                          
-                          <div style={{ flex: 1 }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                              <div>
-                                <h4 style={{ fontSize: "1.15rem", fontWeight: 900 }}>{cel.name}</h4>
-                                <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600 }}>{cel.category}</p>
-                              </div>
-                            </div>
-                            <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                              {cel.bio}
-                            </p>
-                          </div>
-
-                          <div style={{ 
-                            display: "flex", justifyContent: "space-between", alignItems: "center", 
-                            marginTop: 16, paddingTop: 16, borderTop: "1px solid rgba(0,0,0,0.05)" 
-                          }}>
-                            <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{cel.totalVotes} platform votes</div>
-                            <div style={{ display: "flex", gap: 8 }}>
-                              <button 
-                                onClick={() => openModal(cel)} 
-                                style={{ 
-                                  background: "rgba(102,126,234,0.1)", color: "var(--aurora-indigo)", border: "none", 
-                                  width: 36, height: 36, borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
-                                }}
-                              >
-                                <Settings size={18} />
-                              </button>
-                              <button 
-                                onClick={() => handleDelete(cel.id, cel.name)} 
-                                style={{ 
-                                  background: "rgba(245,87,108,0.1)", color: "#f5576c", border: "none", 
-                                  width: 36, height: 36, borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
-                                }}
-                              >
-                                <X size={18} />
-                              </button>
-                            </div>
-                          </div>
-                        </GlassPanel>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-               </div>
-             ) : (
-               <GlassPanel padding="0" radius="2xl" style={{ overflow: "hidden", border: "1px solid rgba(0,0,0,0.03)" }}>
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr style={{ background: "rgba(0,0,0,0.02)", textAlign: "left" }}>
-                        <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Profile</th>
-                        <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Category</th>
-                        <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Performance</th>
-                        <th style={{ padding: "16px 20px", textAlign: "right", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Admin</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredCelebrities.map(cel => (
-                        <tr key={cel.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.03)" }}>
-                          <td style={{ padding: "12px 20px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <AnimatePresence mode="wait">
+            {activeTab === "celebrities" ? (
+              <motion.div 
+                key="celeb-tab" 
+                initial={{ opacity: 0, y: 10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                exit={{ opacity: 0, y: -10 }}
+              >
+                {viewMode === "grid" ? (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24 }}>
+                    <AnimatePresence>
+                      {filteredCelebrities.map((cel, idx) => (
+                        <motion.div
+                          key={cel.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                        >
+                          <GlassPanel padding="var(--space-md)" radius="2xl" style={{ position: "relative", overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}>
+                            <div style={{ position: "relative", width: "100%", height: 200, borderRadius: 16, overflow: "hidden", marginBottom: 16 }}>
                               <Image 
                                 src={cel.photo} 
                                 alt={cel.name} 
-                                width={44} 
-                                height={44} 
+                                fill
                                 unoptimized
-                                style={{ borderRadius: "10px", objectFit: "cover", boxShadow: "0 4px 10px rgba(0,0,0,0.05)" }} 
+                                style={{ objectFit: "cover" }} 
                               />
+                              <div style={{ 
+                                position: "absolute", top: 12, right: 12, background: "rgba(255,255,255,0.9)", 
+                                backdropFilter: "blur(4px)", padding: "4px 10px", borderRadius: 10, 
+                                fontSize: "0.85rem", fontWeight: 800, display: "flex", alignItems: "center", gap: 4
+                              }}>
+                                <Star size={14} fill="var(--aurora-indigo)" stroke="var(--aurora-indigo)" />
+                                {cel.avgRating.toFixed(1)}
+                              </div>
+                            </div>
+                            
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                                <div>
+                                  <h4 style={{ fontSize: "1.15rem", fontWeight: 900 }}>{cel.name}</h4>
+                                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600 }}>{cel.category}</p>
+                                </div>
+                              </div>
+                              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                                {cel.bio}
+                              </p>
+                            </div>
+
+                            <div style={{ 
+                              display: "flex", justifyContent: "space-between", alignItems: "center", 
+                              marginTop: 16, paddingTop: 16, borderTop: "1px solid rgba(0,0,0,0.05)" 
+                            }}>
+                              <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{cel.totalVotes} platform votes</div>
+                              <div style={{ display: "flex", gap: 8 }}>
+                                <button 
+                                  onClick={() => openModal(cel)} 
+                                  style={{ 
+                                    background: "rgba(102,126,234,0.1)", color: "var(--aurora-indigo)", border: "none", 
+                                    width: 36, height: 36, borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
+                                  }}
+                                >
+                                  <Settings size={18} />
+                                </button>
+                                <button 
+                                  onClick={() => handleDelete(cel.id, cel.name)} 
+                                  style={{ 
+                                    background: "rgba(245,87,108,0.1)", color: "#f5576c", border: "none", 
+                                    width: 36, height: 36, borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
+                                  }}
+                                >
+                                  <X size={18} />
+                                </button>
+                              </div>
+                            </div>
+                          </GlassPanel>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <GlassPanel padding="0" radius="2xl" style={{ overflow: "hidden", border: "1px solid rgba(0,0,0,0.03)" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                      <thead>
+                        <tr style={{ background: "rgba(0,0,0,0.02)", textAlign: "left" }}>
+                          <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Profile</th>
+                          <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Category</th>
+                          <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Performance</th>
+                          <th style={{ padding: "16px 20px", textAlign: "right", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Admin</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredCelebrities.map(cel => (
+                          <tr key={cel.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.03)" }}>
+                            <td style={{ padding: "12px 20px" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                <Image 
+                                  src={cel.photo} 
+                                  alt={cel.name} 
+                                  width={44} 
+                                  height={44} 
+                                  unoptimized
+                                  style={{ borderRadius: "10px", objectFit: "cover", boxShadow: "0 4px 10px rgba(0,0,0,0.05)" }} 
+                                />
+                                <div>
+                                  <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{cel.name}</div>
+                                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{cel.nationality || "International"}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td style={{ padding: "12px 20px" }}>
+                              <span style={{ background: "rgba(102,126,234,0.08)", color: "var(--aurora-indigo)", padding: "4px 10px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 800 }}>
+                                {cel.category}
+                              </span>
+                            </td>
+                            <td style={{ padding: "12px 20px" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800 }}>
+                                {cel.avgRating.toFixed(1)} <Star size={14} fill="gold" stroke="gold" />
+                                <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: "0.8rem" }}>({cel.totalVotes} votes)</span>
+                              </div>
+                            </td>
+                            <td style={{ padding: "12px 20px", textAlign: "right" }}>
+                              <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+                                <button onClick={() => openModal(cel)} style={{ background: "none", border: "none", color: "var(--aurora-indigo)", cursor: "pointer", fontWeight: 800, fontSize: "0.85rem" }}>EDIT</button>
+                                <button onClick={() => handleDelete(cel.id, cel.name)} style={{ background: "none", border: "none", color: "#f5576c", cursor: "pointer", fontWeight: 800, fontSize: "0.85rem" }}>DELETE</button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </GlassPanel>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="user-tab" 
+                initial={{ opacity: 0, y: 10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                exit={{ opacity: 0, y: -10 }}
+              >
+                <GlassPanel padding="0" radius="2xl" style={{ overflow: "hidden", border: "1px solid rgba(0,0,0,0.03)" }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <thead>
+                      <tr style={{ background: "rgba(0,0,0,0.02)", textAlign: "left" }}>
+                        <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Identity</th>
+                        <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Access Level</th>
+                        <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Contribution</th>
+                        <th style={{ padding: "16px 20px", textAlign: "right", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredUsers.map(user => (
+                        <tr key={user.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.03)" }}>
+                          <td style={{ padding: "12px 20px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                              <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--aurora-gradient)", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 800, fontSize: "0.9rem" }}>
+                                {user.name.charAt(0)}
+                              </div>
                               <div>
-                                <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{cel.name}</div>
-                                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{cel.nationality || "International"}</div>
+                                <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{user.name}</div>
+                                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{user.email}</div>
                               </div>
                             </div>
                           </td>
                           <td style={{ padding: "12px 20px" }}>
-                            <span style={{ background: "rgba(102,126,234,0.08)", color: "var(--aurora-indigo)", padding: "4px 10px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 800 }}>
-                              {cel.category}
+                            <span style={{ 
+                              padding: "4px 10px", borderRadius: 8, fontSize: "0.7rem", fontWeight: 900, textTransform: "uppercase",
+                              background: user.role === "admin" ? "rgba(102,126,234,0.15)" : "rgba(0,0,0,0.05)",
+                              color: user.role === "admin" ? "var(--aurora-indigo)" : "var(--text-muted)",
+                              display: "inline-flex", alignItems: "center", gap: 4
+                            }}>
+                              {user.role === 'admin' && <ShieldCheck size={12} />}
+                              {user.role}
                             </span>
                           </td>
                           <td style={{ padding: "12px 20px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800 }}>
-                              {cel.avgRating.toFixed(1)} <Star size={14} fill="gold" stroke="gold" />
-                              <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: "0.8rem" }}>({cel.totalVotes} votes)</span>
-                            </div>
+                            <div style={{ fontWeight: 800 }}>{user._count.ratings} <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: "0.8rem" }}>Ratings cast</span></div>
+                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Member since {new Date(user.createdAt).getFullYear()}</div>
                           </td>
                           <td style={{ padding: "12px 20px", textAlign: "right" }}>
-                            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
-                              <button onClick={() => openModal(cel)} style={{ background: "none", border: "none", color: "var(--aurora-indigo)", cursor: "pointer", fontWeight: 800, fontSize: "0.85rem" }}>EDIT</button>
-                              <button onClick={() => handleDelete(cel.id, cel.name)} style={{ background: "none", border: "none", color: "#f5576c", cursor: "pointer", fontWeight: 800, fontSize: "0.85rem" }}>DELETE</button>
-                            </div>
+                            <button 
+                              onClick={() => toggleUserRole(user.id, user.role)} 
+                              style={{ background: "none", border: "none", color: "var(--aurora-indigo)", cursor: "pointer", fontWeight: 800, fontSize: "0.85rem" }}
+                            >
+                              {user.role === "admin" ? "REVOKE ACCESS" : "GRANT ADMIN"}
+                            </button>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-               </GlassPanel>
-             )}
-          </motion.div>
-        ) : (
-          <motion.div 
-            key="user-tab" 
-            initial={{ opacity: 0, y: 10 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <GlassPanel padding="0" radius="2xl" style={{ overflow: "hidden", border: "1px solid rgba(0,0,0,0.03)" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                  <tr style={{ background: "rgba(0,0,0,0.02)", textAlign: "left" }}>
-                    <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Identity</th>
-                    <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Access Level</th>
-                    <th style={{ padding: "16px 20px", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Contribution</th>
-                    <th style={{ padding: "16px 20px", textAlign: "right", fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map(user => (
-                    <tr key={user.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.03)" }}>
-                      <td style={{ padding: "12px 20px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--aurora-gradient)", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 800, fontSize: "0.9rem" }}>
-                             {user.name.charAt(0)}
-                          </div>
-                          <div>
-                            <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{user.name}</div>
-                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{user.email}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td style={{ padding: "12px 20px" }}>
-                        <span style={{ 
-                          padding: "4px 10px", borderRadius: 8, fontSize: "0.7rem", fontWeight: 900, textTransform: "uppercase",
-                          background: user.role === "admin" ? "rgba(102,126,234,0.15)" : "rgba(0,0,0,0.05)",
-                          color: user.role === "admin" ? "var(--aurora-indigo)" : "var(--text-muted)",
-                          display: "inline-flex", alignItems: "center", gap: 4
-                        }}>
-                          {user.role === 'admin' && <ShieldCheck size={12} />}
-                          {user.role}
-                        </span>
-                      </td>
-                      <td style={{ padding: "12px 20px" }}>
-                        <div style={{ fontWeight: 800 }}>{user._count.ratings} <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: "0.8rem" }}>Ratings cast</span></div>
-                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Member since {new Date(user.createdAt).getFullYear()}</div>
-                      </td>
-                      <td style={{ padding: "12px 20px", textAlign: "right" }}>
-                        <button 
-                          onClick={() => toggleUserRole(user.id, user.role)} 
-                          style={{ background: "none", border: "none", color: "var(--aurora-indigo)", cursor: "pointer", fontWeight: 800, fontSize: "0.85rem" }}
-                        >
-                          {user.role === "admin" ? "REVOKE ACCESS" : "GRANT ADMIN"}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </GlassPanel>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                </GlassPanel>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
 
       {/* Slide-over Drawer for Celeb Form */}
       <AnimatePresence>
