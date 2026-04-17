@@ -7,25 +7,25 @@ import { RatingRing } from "./RatingRing";
 
 type Phase = "loading" | "showing" | "submitting" | "transitioning" | "empty";
 
-const SPRING_ENTER  = { type: "spring" as const, stiffness: 300, damping: 22, mass: 0.9 };
-const SPRING_EXIT   = { type: "spring" as const, stiffness: 250, damping: 20, mass: 0.85 };
+const SPRING_ENTER  = { type: "spring" as const, stiffness: 200, damping: 25, mass: 1.2 };
+const SPRING_EXIT   = { type: "spring" as const, stiffness: 300, damping: 20, mass: 0.8 };
 
 const cardVariants = {
-  initial:    { y: 80,    scale: 0.88, opacity: 0,   rotate: 0   },
-  animate:    { y: 0,     scale: 1,    opacity: 1,   rotate: 0   },
-  exitLeft:   { x: "-115vw", scale: 0.9,  opacity: 0, rotate: -14, transition: SPRING_EXIT },
-  exitRight:  { x:  "115vw", scale: 0.9,  opacity: 0, rotate:  14, transition: SPRING_EXIT },
+  initial:    { y: 150,   scale: 0.7,  opacity: 0,   rotateZ: -10, filter: "blur(10px)" },
+  animate:    { y: 0,     scale: 1,    opacity: 1,   rotateZ: 0,   filter: "blur(0px)", transition: SPRING_ENTER },
+  exitLeft:   { x: "-120vw", scale: 0.8,  opacity: 0, rotateZ: -25, transition: SPRING_EXIT },
+  exitRight:  { x:  "120vw", scale: 0.8,  opacity: 0, rotateZ:  25, transition: SPRING_EXIT },
 };
 
 const bioVariants = {
-  hidden:  { opacity: 0, y: 20 },
+  hidden:  { opacity: 0, x: 30, filter: "blur(4px)" },
   visible: (delay: number) => ({
-    opacity: 1, y: 0,
+    opacity: 1, x: 0, filter: "blur(0px)",
     transition: {
-      delay: delay * 0.08,
+      delay: delay * 0.12,
       type: "spring" as const,
-      stiffness: 260,
-      damping: 22,
+      stiffness: 180,
+      damping: 24,
     },
   }),
 };
