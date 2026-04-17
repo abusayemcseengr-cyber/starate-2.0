@@ -63,9 +63,9 @@ export default function AboutPage() {
           flex-wrap: wrap;
         }
         .leader-image-side {
-          flex: 1 1 300px;
+          flex: 1 1 250px;
           position: relative;
-          min-height: 350px;
+          min-height: 280px;
           background: var(--aurora-gradient);
         }
         .leader-content-side {
@@ -220,11 +220,11 @@ export default function AboutPage() {
               gap: "var(--space-lg)" 
             }}>
               {teamMembers.map((member, i) => (
-                <GlassPanel key={i} radius="xl" padding="var(--space-xl)" style={{ textAlign: "left" }}>
+                <GlassPanel key={i} radius="xl" padding="var(--space-2xl) var(--space-xl)" style={{ textAlign: "center" }}>
                   <div style={{ 
-                    width: 64, height: 64, borderRadius: 16, background: "rgba(0,0,0,0.04)", 
-                    position: "relative", overflow: "hidden", border: "2px solid rgba(102, 126, 234, 0.2)",
-                    marginBottom: "var(--space-lg)", flexShrink: 0
+                    width: 120, height: 120, borderRadius: "50%", background: "rgba(0,0,0,0.04)", 
+                    position: "relative", overflow: "hidden", border: "4px solid white", boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+                    margin: "0 auto var(--space-lg)", flexShrink: 0
                   }}>
                     <Image 
                       src={member.image} 
@@ -234,11 +234,11 @@ export default function AboutPage() {
                       style={{ objectFit: "cover" }} 
                     />
                   </div>
-                  <h4 style={{ fontWeight: 900, fontSize: "1.1rem", marginBottom: 2 }}>{member.name}</h4>
-                  <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--aurora-indigo)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "var(--space-md)" }}>
+                  <h4 style={{ fontWeight: 900, fontSize: "1.2rem", marginBottom: 4 }}>{member.name}</h4>
+                  <p style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--aurora-indigo)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "var(--space-md)" }}>
                     {member.role}
                   </p>
-                  <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
                     {member.info}
                   </p>
                 </GlassPanel>
