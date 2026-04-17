@@ -26,7 +26,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
           user.password
         );
         
-        if (passwordsMatch) return { id: user.id, name: user.name, email: user.email };
+        if (passwordsMatch) return { id: user.id, name: user.name, email: user.email, role: user.role };
         return null;
       }
     })

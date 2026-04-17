@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("PRISMA_DATABASE_URL")
+  directUrl = env("DATABASE_URL")
 }
 
 model User {
@@ -14,6 +14,7 @@ model User {
   email         String    @unique
   password      String
   avatar        String?
+  role          String    @default("user") // "user" or "admin"
   ratings       Rating[]
   createdAt     DateTime  @default(now())
 }
