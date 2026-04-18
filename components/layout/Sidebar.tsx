@@ -28,6 +28,8 @@ const springConfig = {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === 'ADMIN';
   const firstItemRef = useRef<HTMLAnchorElement>(null);
 
   // Focus trap: focus first nav item on open
@@ -144,30 +146,32 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
               <div className="sidebar__divider" style={{ marginTop: 'auto' }} />
 
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.28, ...springConfig }}
-              >
-                <Link
-                  href="/admin"
-                  onClick={onClose}
-                  className="sidebar__nav-item"
-                  id="sidebar-nav-admin"
-                  style={{
-                    background: 'rgba(102,126,234,0.1)',
-                    border: '1px solid rgba(102,126,234,0.2)',
-                  }}
+              {isAdmin && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.28, ...springConfig }}
                 >
-                  <span className="sidebar__nav-icon">🛡️</span>
-                  <span
-                    className="sidebar__nav-text"
-                    style={{ color: 'var(--aurora-indigo)', fontWeight: 700 }}
+                  <Link
+                    href="/admin"
+                    onClick={onClose}
+                    className="sidebar__nav-item"
+                    id="sidebar-nav-admin"
+                    style={{
+                      background: 'rgba(102,126,234,0.1)',
+                      border: '1px solid rgba(102,126,234,0.2)',
+                    }}
                   >
-                    Admin Panel
-                  </span>
-                </Link>
-              </motion.div>
+                    <span className="sidebar__nav-icon">🛡️</span>
+                    <span
+                      className="sidebar__nav-text"
+                      style={{ color: 'var(--aurora-indigo)', fontWeight: 700 }}
+                    >
+                      Admin Panel
+                    </span>
+                  </Link>
+                </motion.div>
+              )}
             </nav>
 
             {/* Footer */}

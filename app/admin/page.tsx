@@ -379,10 +379,10 @@ export default function AdminDashboard() {
                   marginBottom: 8,
                 }}
               >
-                Commander Center
+                Admin Panel
               </h1>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                Elevated access required. Please enter your terminal pin.
+                This area is restricted. Enter your admin PIN to continue.
               </p>
             </div>
 
@@ -429,7 +429,7 @@ export default function AdminDashboard() {
                   marginTop: 8,
                 }}
               >
-                Authorize Access
+                Sign In
               </motion.button>
             </form>
 
@@ -442,7 +442,7 @@ export default function AdminDashboard() {
                 color: 'var(--text-muted)',
               }}
             >
-              Secure production gateway v2.0
+              StarRate · Administrator Access
             </div>
           </GlassPanel>
         </motion.div>
@@ -556,10 +556,10 @@ export default function AdminDashboard() {
                 marginBottom: 8,
               }}
             >
-              Commander Hub
+              Admin Dashboard
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-              Streamline your platform operations.
+              Manage celebrities, ratings, and user accounts.
             </p>
           </div>
 
@@ -582,7 +582,7 @@ export default function AdminDashboard() {
               }}
             >
               <Plus size={20} />
-              Onboard Star
+              Add Celebrity
             </button>
           </div>
         </div>
@@ -600,28 +600,28 @@ export default function AdminDashboard() {
           }}
         >
           <MetricCard
-            title="Active Stars"
+            title="Total Celebrities"
             value={stats.totalStars}
             icon={Star}
             trend="+3 this week"
             color="var(--aurora-indigo)"
           />
           <MetricCard
-            title="Engagement"
+            title="Total Ratings"
             value={stats.totalVotes}
             icon={BarChart3}
             trend="12% vs last month"
             color="var(--aurora-purple)"
           />
           <MetricCard
-            title="System Users"
+            title="Registered Users"
             value={stats.totalUsers}
             icon={Users}
             trend="+42 recent"
             color="var(--aurora-pink)"
           />
           <MetricCard
-            title="Global Rating"
+            title="Platform Avg. Rating"
             value={`${stats.platformAvg} ★`}
             icon={Star}
             color="var(--aurora-emerald)"
@@ -653,7 +653,7 @@ export default function AdminDashboard() {
                   }}
                 />
                 <input
-                  placeholder={`Search ${activeTab === 'celebrities' ? 'stars' : 'users'}...`}
+                  placeholder={`Search ${activeTab === 'celebrities' ? 'celebrities' : 'users'}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   style={{
@@ -1435,7 +1435,7 @@ export default function AdminDashboard() {
                     fontWeight: 900,
                   }}
                 >
-                  {editingId ? 'Revise Star' : 'Onboard Star'}
+                  {editingId ? 'Edit Celebrity' : 'Add Celebrity'}
                 </h2>
                 <button
                   onClick={closeModal}
@@ -1471,7 +1471,7 @@ export default function AdminDashboard() {
                       color: 'var(--text-muted)',
                     }}
                   >
-                    IDENTITY
+                    NAME
                   </label>
                   <input
                     required
@@ -1498,7 +1498,7 @@ export default function AdminDashboard() {
                       color: 'var(--text-muted)',
                     }}
                   >
-                    FIELD of FAME
+                    CATEGORY
                   </label>
                   <input
                     required
@@ -1525,7 +1525,7 @@ export default function AdminDashboard() {
                       color: 'var(--text-muted)',
                     }}
                   >
-                    VISUAL ASSET (URL)
+                    PHOTO URL
                   </label>
                   <input
                     required
@@ -1552,7 +1552,7 @@ export default function AdminDashboard() {
                       color: 'var(--text-muted)',
                     }}
                   >
-                    ORIGIN
+                    NATIONALITY
                   </label>
                   <input
                     placeholder="Nationality"
@@ -1636,10 +1636,10 @@ export default function AdminDashboard() {
                     }}
                   >
                     {submitting
-                      ? 'Deploying...'
+                      ? 'Saving...'
                       : editingId
-                        ? 'Update Intel'
-                        : 'Publish Star'}
+                        ? 'Save Changes'
+                        : 'Add Celebrity'}
                   </button>
                 </div>
               </form>
