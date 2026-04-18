@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, LayoutGroup } from 'motion/react';
 import { GlassPanel } from '@/components/ui/GlassPanel';
@@ -172,12 +172,15 @@ export default function AdminDashboard() {
       u.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getHeaders = () => ({
-    'Content-Type': 'application/json',
-    'x-admin-password': sessionStorage.getItem('adminPassword') || '',
-  });
+  const getHeaders = useCallback(
+    () => ({
+      'Content-Type': 'application/json',
+      'x-admin-password': sessionStorage.getItem('adminPassword') || '',
+    }),
+    []
+  );
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [celRes, userRes] = await Promise.all([
@@ -189,7 +192,7 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getHeaders]);
 
   const verifyPassword = async (password: string) => {
     try {
@@ -222,7 +225,7 @@ export default function AdminDashboard() {
     if (isAuthenticated) {
       fetchData();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, fetchData]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
