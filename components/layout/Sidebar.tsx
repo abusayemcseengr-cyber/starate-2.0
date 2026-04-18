@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
-import { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import { useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface SidebarProps {
   open: boolean;
@@ -12,15 +12,15 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { href: "/rate",       icon: "🏠", label: "Rate" },
-  { href: "/rankings",   icon: "📊", label: "Rankings" },
-  { href: "/collection", icon: "📁", label: "Collection" },
-  { href: "/qa",         icon: "❓", label: "Q&A" },
-  { href: "/about",      icon: "ℹ️",  label: "About Us" },
+  { href: '/rate', icon: '🏠', label: 'Rate' },
+  { href: '/rankings', icon: '📊', label: 'Rankings' },
+  { href: '/collection', icon: '📁', label: 'Collection' },
+  { href: '/qa', icon: '❓', label: 'Q&A' },
+  { href: '/about', icon: 'ℹ️', label: 'About Us' },
 ];
 
 const springConfig = {
-  type: "spring" as const,
+  type: 'spring' as const,
   stiffness: 260,
   damping: 28,
   mass: 0.9,
@@ -28,7 +28,6 @@ const springConfig = {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const { data: session } = useSession();
   const firstItemRef = useRef<HTMLAnchorElement>(null);
 
   // Focus trap: focus first nav item on open
@@ -41,16 +40,18 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && open) onClose();
+      if (e.key === 'Escape' && open) onClose();
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);
 
   // Lock body scroll while open
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [open]);
 
   return (
@@ -71,16 +72,21 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           {/* Panel */}
           <motion.aside
             className="sidebar"
-            initial={{ x: "-100%" }}
+            initial={{ x: '-100%' }}
             animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
+            exit={{ x: '-100%' }}
             transition={springConfig}
             aria-label="Site navigation"
             role="dialog"
           >
             {/* Header */}
             <div className="sidebar__header">
-              <Link href="/rate" className="sidebar__logo" onClick={onClose} id="sidebar-logo">
+              <Link
+                href="/rate"
+                className="sidebar__logo"
+                onClick={onClose}
+                id="sidebar-logo"
+              >
                 <div className="navbar__logo-icon">⭐</div>
                 <span className="navbar__logo-text">StarRate</span>
               </Link>
@@ -111,9 +117,9 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                       href={item.href}
                       ref={idx === 0 ? firstItemRef : undefined}
                       onClick={onClose}
-                      className={`sidebar__nav-item${isActive ? " active" : ""}`}
-                      id={`sidebar-nav-${item.label.toLowerCase().replace(/\s/g, "-")}`}
-                      aria-current={isActive ? "page" : undefined}
+                      className={`sidebar__nav-item${isActive ? ' active' : ''}`}
+                      id={`sidebar-nav-${item.label.toLowerCase().replace(/\s/g, '-')}`}
+                      aria-current={isActive ? 'page' : undefined}
                     >
                       <span className="sidebar__nav-icon">{item.icon}</span>
                       <span className="sidebar__nav-text">{item.label}</span>
@@ -121,12 +127,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                         <motion.span
                           layoutId="sidebar-active-indicator"
                           style={{
-                            position: "absolute",
-                            right: "12px",
-                            width: "6px",
-                            height: "6px",
-                            borderRadius: "50%",
-                            background: "rgba(255,255,255,0.8)",
+                            position: 'absolute',
+                            right: '12px',
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: 'rgba(255,255,255,0.8)',
                             zIndex: 2,
                           }}
                         />
@@ -136,24 +142,32 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 );
               })}
 
-              <div className="sidebar__divider" style={{ marginTop: "auto" }} />
-              
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.28, ...springConfig }}
+              <div className="sidebar__divider" style={{ marginTop: 'auto' }} />
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.28, ...springConfig }}
+              >
+                <Link
+                  href="/admin"
+                  onClick={onClose}
+                  className="sidebar__nav-item"
+                  id="sidebar-nav-admin"
+                  style={{
+                    background: 'rgba(102,126,234,0.1)',
+                    border: '1px solid rgba(102,126,234,0.2)',
+                  }}
                 >
-                  <Link
-                    href="/admin"
-                    onClick={onClose}
-                    className="sidebar__nav-item"
-                    id="sidebar-nav-admin"
-                    style={{ background: "rgba(102,126,234,0.1)", border: "1px solid rgba(102,126,234,0.2)" }}
+                  <span className="sidebar__nav-icon">🛡️</span>
+                  <span
+                    className="sidebar__nav-text"
+                    style={{ color: 'var(--aurora-indigo)', fontWeight: 700 }}
                   >
-                    <span className="sidebar__nav-icon">🛡️</span>
-                    <span className="sidebar__nav-text" style={{ color: "var(--aurora-indigo)", fontWeight: 700 }}>Admin Panel</span>
-                  </Link>
-                </motion.div>
+                    Admin Panel
+                  </span>
+                </Link>
+              </motion.div>
             </nav>
 
             {/* Footer */}
@@ -165,9 +179,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               >
                 <button
                   className="sidebar__nav-item"
-                  onClick={() => { signOut({ callbackUrl: "/login" }); onClose(); }}
+                  onClick={() => {
+                    signOut({ callbackUrl: '/login' });
+                    onClose();
+                  }}
                   id="sidebar-logout-btn"
-                  style={{ color: "#f5576c" }}
+                  style={{ color: '#f5576c' }}
                 >
                   <span className="sidebar__nav-icon">🚪</span>
                   <span className="sidebar__nav-text">Logout</span>

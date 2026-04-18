@@ -1,4 +1,5 @@
-import type { NextAuthConfig } from "next-auth";
+import type { NextAuthConfig } from 'next-auth';
+import { Role } from '@prisma/client';
 
 export const authConfig = {
   providers: [], // Add providers with Edge compatibility here if needed, else leave empty for Node-only providers
@@ -12,14 +13,14 @@ export const authConfig = {
     },
     session({ session, token }) {
       if (token.id && session.user) {
-         session.user.id = token.id as string;
-         session.user.role = token.role as "admin" | "user";
+        session.user.id = token.id as string;
+        session.user.role = token.role as Role;
       }
       return session;
-    }
+    },
   },
-  session: { strategy: "jwt" },
+  session: { strategy: 'jwt' },
   pages: {
-    signIn: "/login",
-  }
+    signIn: '/login',
+  },
 } satisfies NextAuthConfig;

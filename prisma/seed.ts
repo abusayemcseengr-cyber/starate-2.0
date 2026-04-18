@@ -1,16 +1,16 @@
-import { PrismaClient } from "@prisma/client";
-import { celebrities } from "../lib/celebrities-data";
-import { bangladeshiCelebrities } from "../lib/bangladeshi-celebrities";
+import { PrismaClient } from '@prisma/client';
+import { celebrities } from '../lib/celebrities-data';
+import { bangladeshiCelebrities } from '../lib/bangladeshi-celebrities';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding StarRate database...");
+  console.log('🌱 Seeding StarRate database...');
 
   // Assign demo photos to first few celebrities
   const photoPaths: Record<string, string> = {
-    Zendaya:         "/celebrities/portrait_f1.png",
-    "Timothée Chalamet": "/celebrities/portrait_m1.png",
+    Zendaya: '/celebrities/portrait_f1.png',
+    'Timothée Chalamet': '/celebrities/portrait_m1.png',
   };
 
   const allCelebrities = [...celebrities, ...bangladeshiCelebrities];
@@ -33,7 +33,11 @@ async function main() {
       // Explicitly type cast string any properties if needed, but schema handles Strings
       // 'cel' can be either CelebrityData without a photo field or with it.
       // We will access (cel as any).photo to be totally safe in typescript if the type differs.
-      const photoStr = photoPaths[cel.name] || (cel as any).photo || "";
+      // Ensure no empty photo strings reach the database
+      const photoStr =
+        photoPaths[cel.name] ||
+        (cel as any).photo ||
+        '/celebrities/placeholder.png';
 
       await prisma.celebrity.create({
         data: {

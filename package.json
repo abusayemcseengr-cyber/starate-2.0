@@ -8,14 +8,27 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "antd": "^6.3.5",
+    "@prisma/client": "5.22.0",
     "bcryptjs": "^3.0.3",
     "lucide-react": "^1.8.0",
     "motion": "^12.38.0",
@@ -23,18 +36,29 @@
     "next-auth": "^5.0.0-beta.30",
     "prisma": "^5.22.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
+    "@typescript-eslint/parser": "^8.58.2",
+    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jsdom": "^29.0.2",
+    "lint-staged": "^16.4.0",
     "postcss": "^8",
+    "prettier": "^3.8.3",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.4"
   }
 }

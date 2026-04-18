@@ -1,39 +1,31 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
+import { getNextCelebrityUseCase, ratingRepo } from '@/src/core/container';
 
 export async function GET() {
   try {
-    // Get already-rated IDs for the current session user
-    let excludeIds: string[] = [];
     const session = await auth();
+    let excludeIds: string[] = [];
+
     if (session?.user?.id) {
-      const rated = await prisma.rating.findMany({
-        where: { userId: session.user.id },
-        select: { celebrityId: true },
-      });
+      const rated = await ratingRepo.findByUser(session.user.id);
       excludeIds = rated.map((r) => r.celebrityId);
     }
 
-    const count = await prisma.celebrity.count({
-      where: { id: { notIn: excludeIds } },
-    });
+    const celebrity = await getNextCelebrityUseCase.execute(excludeIds);
 
-    if (count === 0) {
+    if (!celebrity) {
       return NextResponse.json(
-        { error: "No more celebrities to rate", allRated: true },
+        { error: 'No more celebrities to rate', allRated: true },
         { status: 404 }
       );
     }
 
-    const skip = Math.floor(Math.random() * count);
-    const celebrity = await prisma.celebrity.findFirst({
-      where: { id: { notIn: excludeIds } },
-      skip,
-    });
-
     return NextResponse.json(celebrity);
   } catch {
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
