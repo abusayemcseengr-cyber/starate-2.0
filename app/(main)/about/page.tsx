@@ -4,15 +4,7 @@ import { motion } from 'motion/react';
 import Image from 'next/image';
 import { GlassPanel } from '@/components/ui/GlassPanel';
 import { StatsGrid } from '@/components/about/StatsGrid';
-import {
-  Code,
-  Monitor,
-  Cpu,
-  ShieldCheck,
-  Sparkles,
-  Command,
-  Layout,
-} from 'lucide-react';
+import { Sparkles, Layout } from 'lucide-react';
 
 // Team Members Mapping
 const teamMembers = [
